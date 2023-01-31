@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#gitを試しに使うページ">Gitを試しに使うページ</a>
+<ul>
+<li><a href="#このページについて">このページについて</a></li>
+<li><a href="#clone">1. clone</a></li>
+<li><a href="#branchの作成">2. branchの作成</a></li>
+<li><a href="#ファイルのcommit">3.ファイルのcommit</a></li>
+<li><a href="#pull-requestの作成・review・merge">4. pull requestの作成・review・merge</a></li>
+<li><a href="#merge先branchの更新確認">5. merge先branchの更新確認</a></li>
+<li><a href="#conflict">6. conflict</a></li>
+<li><a href="#あと片付けrevert">7. あと片付け(revert)</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="gitを試しに使うページ">Gitを試しに使うページ</h1>
+<h2 id="このページについて">このページについて</h2>
+<p>Gitを用いての業務の前段階としてこのリポジトリでGitの挙動について確認できればと思います。</p>
+<h2 id="clone">1. clone</h2>
+<p>このリポジトリをcloneしてください。</p>
+<pre><code>git clone https://github.com/yoshitakaminami/git-test.git
+</code></pre>
+<p>git-test というディレクトリができれば成功です。<br>
+git-testディレクトリに移動し</p>
+<pre><code>git status
+git branch
+</code></pre>
+<p>を試してください。<br>
+慣れるまでは(慣れても)statusコマンドとbranchコマンドを打つ癖を付けておくとミスが減ります。</p>
+<h2 id="branchの作成">2. branchの作成</h2>
+<p>master branchに居ることを確認した上で練習用branchを作成しましょう。(社内では生やすと言う表現が多いです。)</p>
+<p>※ 20230131の部分は適宜日付に変えてください。</p>
+<pre><code>git branch training_20230131
+</code></pre>
+<p>その後練習用branchへ移動、自身の居るbranchを確認</p>
+<pre><code>git checkout training_20230131
+git branch
+</code></pre>
+<p>以下のコマンドでbranchの作成と移動を一挙にできます。</p>
+<pre><code>git checkout -b training_20230131
+</code></pre>
+<h2 id="ファイルのcommit">3.ファイルのcommit</h2>
+<p>このファイルに対して適当な変更を加えてcommit します。<br>
+↓の行に自分の名前とか書いてください。<br>
+ついでに2.で作ったbranch名をファイル内で置き換えておくといいです。<br>
+※ 実際はこの部分がコーディング作業となります。</p>
+<p>この辺に名前書く</p>
+<hr>
+<p>↑のファイルの変更・保存が終わったら<br>
+index への登録確認</p>
+<pre><code>git status
+</code></pre>
+<p>ファイルをstageに登録(社内ではaddするとか言います。)<br>
+index.html部分はファイル名です。<br>
+半角スペースを空けて複数登録可能<br>
+ディレクトリを指定するとディレクトリ内のファイルを全て登録可能</p>
+<pre><code>git add index.html
+</code></pre>
+<p>ファイルがstageされたことを確認</p>
+<pre><code>git status
+</code></pre>
+<p>stageされたファイルをcommitします。<br>
+このあたりから作業の差し戻しが面倒になるので注意<br>
+※ メッセージはリポジトリによって記述ルールがあることあがります。<br>
+　特にルールが無くても何をしたcommitなのかを記述するようにしてください。(日本語でOKが)</p>
+<pre><code>git commit -m "commit メッセージ"
+</code></pre>
+<p>index, stageにファイルが無いことを確認<br>
+今居るbranchが作業branchであることを確認</p>
+<pre><code>git status
+git branch
+</code></pre>
+<p>commit をpushする</p>
+<pre><code>git push origin training_20230131
+</code></pre>
+<p>※ 社内ではcommit しといてください。等の表現もありますが言語の統一ができていないことがあります。<br>
+　できればpushまでするのかを確認するようにしてください。</p>
+<h2 id="pull-requestの作成・review・merge">4. pull requestの作成・review・merge</h2>
+<p>repositoryのホスティングサイト(github, bitbucket)に行きpull request(プルリク・pr)を作成します。<br>
+作成方法はサイトによってことなります。</p>
+<p>※ 業務フローに沿ってpull requestの向き先(base)branchを設定してください<br>
+　今回はmaster branchに向けるようにしてください<br>
+　reviewerを設定しreview依頼してください。<br>
+　repositoryによっては特定のreviewerの承認ナシや自動テストを通過しないとmergeできないケースがあります。<br>
+　mergeは指示があるまで待つようにしてください。<br>
+　大抵は承認後マージ依頼や上長がマージする旨の連絡来ます。<br>
+　repositoryの設定に依りますが、mergeすることでリリースフローに乗るケースがあります。</p>
+<h2 id="merge先branchの更新確認">5. merge先branchの更新確認</h2>
+<p>ホスティングサイトでmergeまで実行できたら、ローカルで向き先branchに移動(checkout)して差分が反映されていることを確認</p>
+<pre><code>git checkout master
+git branch
+</code></pre>
+<p>エディタでindex.htmlを開いて変更確認できればOKです。</p>
+<p>サイト制作などでFTPでファイルをアップする際は、必ず本番環境にmaster branchのファイルがアップされている状態を保ってください。</p>
+<hr>
+<p>一般的な業務フローはここまでです。<br>
+次からトラブルシューティング(conflict解消)と後片付け(revert)します。</p>
+<hr>
+<h2 id="conflict">6. conflict</h2>
+<p>複数人で同一ファイルを弄るとconflictが発生することがあります。<br>
+Remote-tracking branch(追跡branch)の同期</p>
+<pre><code>git fetch
+</code></pre>
+<p>同期の確認(-aを付けることで追跡branch含めての一覧表示)</p>
+<pre><code>git branch -a
+</code></pre>
+<p>追跡branchの中のconflict_check branchからconflict確認用のbranchを作成<br>
+※ ここでも20230131は適宜変更してください。<br>
+　以下のコマンドでconflict_check からconflict_check_20230131を生やし移動までできます。</p>
+<pre><code>git checkout -b conflict_check_20230131 origin/conflict_check
+git branch
+</code></pre>
+<p>conflict_check_20230131からtraining_20230131をbase branchとしたプルリクを作ってみます。</p>
+<pre><code>git push origin conflict_check_20230131
+</code></pre>
+<p>プルリクを作成するとconflict発生の旨が表示されます。<br>
+ホスティングサイトに依ってはその場で解消することもできますが、できないケースも多いので大抵ローカルで解消commitを作成します。<br>
+以下のコマンドでローカルでmergeを行ない、conflictを発生させます。</p>
+<pre><code>git branch
+git merge training_20230131
+</code></pre>
+<p>conflict発生の旨が記載されます。<br>
+またgitのindexにも該当ファイルが登録されるようになります。</p>
+<pre><code>git status
+</code></pre>
+<p>エディタを開きconflictした箇所のうち残したい差分を残しcommit&amp;pushします。<br>
+今回はtraining_20230131側の修正を残します。<br>
+※ 他者のcommit とconflictした場合は協議の上どちらの差分を残すか決定してください。<br>
+※ 差分を残すという表現を使ってますが、両方残すケースやプログラムの動作状況・仕様次第では全く別の記述が求められることがあります。</p>
+<pre><code>git branch
+git status
+git add index.html
+git commit -m "training_20230131とのconflictの解消"
+git push origin conflict_check_20230131
+</code></pre>
+<p>ホスティングサイトでプルリクを確認するとconflictが解消さmergeできるようになっているのがわかります。<br>
+以降はreviewしてもらいmergeする流れは通常フローと一緒です。</p>
+<h2 id="あと片付けrevert">7. あと片付け(revert)</h2>
+<p>一連の流れでmaster branchはtraining_20230131を取り込んだ状態となります。<br>
+間違った差分を取り込んでしまった場合、やり直すためググるとresetコマンドが出てくることがあります。<br>
+resetコマンドは運用が難しいため慣れるまで(慣れて？)使用しないようにしてください。<br>
+代替としてrevertコマンドを使用します。<br>
+revertコマンドはcommit をなかったことにするcommit を作成してくれます。</p>
+<pre><code>git status \\index等が残っていないのを確認
+git branch
+git checkout master
+git log
+</code></pre>
+<p>git logで過去のcommit 履歴が表示されます。<br>
+commit IDをコピーしてrevert用のbranchを作成します。</p>
+<pre><code>git checkout -b revert_20230131
+git revert [commit ID]
+git push origin revert_20230131
+</code></pre>
+<p>プルリク作成後、承認を経てmaster branchにマージされた後、<br>
+不要なプルリク/branchの削除で片付け終了です。</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
